@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" type="text/css" href="https://csshake.surge.sh/csshake.min.css">
 </head>
+
+<script>
+fetch('https://api.countapi.xyz/hit/jsainzs/america_hoy')
+  .then(res => res.json())
+  .then(res => {
+    document.getElementById('visits').innerText = res.value;
+  });
+</script>
+    
 <body>
 
     <div class="container">
