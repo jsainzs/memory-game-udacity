@@ -96,6 +96,17 @@ h1 {
  * Styles for the Score Panel
  */
 
+.card img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    display: none;
+}
+
+.card.show img,
+.card.match img {
+    display: block;
+}
 .score-panel {
     text-align: left;
     width: 345px;
