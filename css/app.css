@@ -11,14 +11,15 @@ html {
 html,
 body {
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     margin: 0;
     padding: 0;
 }
 
 body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    background: #ffffff url('../img/geometry2.png');
     font-family: 'Coda', cursive;
+    padding: 20px 0 30px 0;
 }
 
 .container {
@@ -32,11 +33,13 @@ body {
     display: none;
     justify-content: center;
     align-items: center;
-    }
+}
 
 h1 {
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
+    margin-bottom: 12px;
+    text-align: center;
 }
 
 /*
@@ -44,31 +47,39 @@ h1 {
  */
 
 .deck {
-    width: 660px;
-    min-height: 680px;
+    width: 760px;
+    min-height: 760px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-    padding: 32px;
-    border-radius: 10px;
+    padding: 24px;
+    border-radius: 14px;
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin: 0 0 3em;
+    gap: 14px;
+    margin: 0 0 2em;
 }
 
 .deck .card {
-    height: 125px;
-    width: 125px;
+    height: 160px;
+    width: 160px;
     background: #2e3d49;
     font-size: 0;
     color: #ffffff;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 8px;
+    overflow: hidden;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.deck .card:hover {
+    transform: scale(1.03);
 }
 
 .deck .card.open {
@@ -92,32 +103,41 @@ h1 {
     background: red;
     font-size: 33px;
 }
+
 /*
- * Styles for the Score Panel
+ * Images inside cards
  */
 
 .card img {
-    width: 80px;
-    height: 80px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     display: none;
+    border-radius: 8px;
 }
 
 .card.show img,
 .card.match img {
     display: block;
 }
+
+/*
+ * Styles for the Score Panel
+ */
+
 .score-panel {
     text-align: left;
-    width: 345px;
-    margin-bottom: 10px;
+    width: 760px;
+    max-width: 100%;
+    margin-bottom: 14px;
+    font-size: 20px;
 }
 
 .score-panel .stars {
     margin: 0;
     padding: 0;
     display: inline-block;
-    margin: 0 5px 0 0;
+    margin-right: 8px;
 }
 
 .score-panel .stars li {
@@ -128,11 +148,16 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+    font-size: 24px;
 }
+
+/*
+ * Back link
+ */
 
 .back-link {
     display: inline-block;
-    margin: 15px 0 20px 0;
+    margin: 10px 0 20px 0;
     padding: 10px 16px;
     background: #facc15;
     color: #0a1f44;
@@ -143,4 +168,50 @@ h1 {
 
 .back-link:hover {
     opacity: 0.9;
+}
+
+/*
+ * Responsive
+ */
+
+@media (max-width: 820px) {
+    .deck {
+        width: 95vw;
+        min-height: auto;
+        padding: 16px;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .deck .card {
+        width: calc(25% - 10px);
+        height: 120px;
+        min-width: 90px;
+    }
+
+    .score-panel {
+        width: 95vw;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 560px) {
+    h1 {
+        font-size: 28px;
+    }
+
+    .deck .card {
+        width: calc(25% - 8px);
+        height: 90px;
+        min-width: 70px;
+        padding: 4px;
+    }
+
+    .score-panel {
+        font-size: 16px;
+    }
+
+    .score-panel .restart {
+        font-size: 20px;
+    }
 }
