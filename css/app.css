@@ -118,3 +118,18 @@ h1 {
     float: right;
     cursor: pointer;
 }
+
+.back-link {
+    display: inline-block;
+    margin: 15px 0 20px 0;
+    padding: 10px 16px;
+    background: #facc15;
+    color: #0a1f44;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    opacity: 0.9;
+}
