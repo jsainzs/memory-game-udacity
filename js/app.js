@@ -1,36 +1,23 @@
-let ul = document.querySelector('ul.deck'); // idea from stackoverflow 7070054
-let score = 0;
-let cards = document.getElementsByClassName('card');
-let opened_cards = [];
-document.getElementsByClassName("moves")[0].innerHTML = 0; // sets number of moves at 0
-let order = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]); // creates a random index
-let num_stars=3; // number of stars
+const deck = document.querySelector('.deck');
+let cards = Array.from(document.getElementsByClassName('card'));
+let openedCards = [];
+let matchedPairs = 0;
+let movesCount = 0;
+let numStars = 3;
+let timerStarted = false;
+let timerInterval = null;
+let totalSeconds = 0;
 
+const movesEl = document.getElementsByClassName("moves")[0];
+const minutesLabel = document.getElementById("minutes");
+const secondsLabel = document.getElementById("seconds");
+const restartBtn = document.getElementsByClassName('restart')[0];
 
-var minutesLabel = document.getElementById("minutes"); //stackoverflow 5517597
-var secondsLabel = document.getElementById("seconds");
-var totalSeconds = 0;
-const times=[];
-localStorage.setItem("times", times);
+movesEl.innerHTML = 0;
 
-function startTimer() {
-  ++totalSeconds;
-  secondsLabel.innerHTML = pad(totalSeconds % 60);
-  minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
-}
-
-function pad(val) {
-  var valString = val + "";
-  if (valString.length < 2) {
-    return "0" + valString;
-  } else {
-    return valString;
-  }
-}
-
-function shuffle(array) { // given shuffle function
-  var currentIndex = array.length,
-    temporaryValue, randomIndex;
+// Shuffle
+function shuffle(array) {
+  let currentIndex = array.length, temporaryValue, randomIndex;
 
   while (currentIndex !== 0) {
     randomIndex = Math.floor(Math.random() * currentIndex);
@@ -39,104 +26,140 @@ function shuffle(array) { // given shuffle function
     array[currentIndex] = array[randomIndex];
     array[randomIndex] = temporaryValue;
   }
-
   return array;
 }
 
-
-
-for (var i = ul.children.length - 1; i >= 0; i--) { // asigns the random index value to every listed element
-  ul.appendChild(ul.children[order[i]]);
+// Reordenar cartas en el DOM
+function shuffleCards() {
+  const shuffled = shuffle(cards.slice());
+  shuffled.forEach(card => deck.appendChild(card));
+  cards = shuffled;
 }
 
-for (i = 0; i < 16; i++) { // creates an event listener for every clicked card
-  cards[i].place = [order[i], i];
-  cards[i].addEventListener("click", clicked);
-};
-
-function clicked() {
-  this.className = "card show open";
-  return opened(this.dataset.card, this.place);
+// Timer
+function startTimer() {
+  timerInterval = setInterval(function () {
+    totalSeconds++;
+    secondsLabel.innerHTML = pad(totalSeconds % 60);
+    minutesLabel.innerHTML = pad(Math.floor(totalSeconds / 60));
+  }, 1000);
 }
 
-function opened(name, index) { // analyzes if the cards match or not, and based on that changes styles.
-  opened_cards.push([name, index[1]]);
-  if(opened_cards.length===1){
-    setInterval(startTimer, 1000);
-  }
-  if (opened_cards.length % 2 === 1) {
-    index1 = opened_cards[opened_cards.length - 1][1];
-    cards[index1].removeEventListener("click", clicked);
-  } else if (opened_cards.length % 2 === 0 && (opened_cards[opened_cards.length - 1][0] === opened_cards[opened_cards.length - 2][0])) {
-    a = document.getElementsByClassName(opened_cards[opened_cards.length - 1][0]);
-    a[0].parentNode.className = "card show match";
-    a[1].parentNode.className = "card show match";
-    index1 = opened_cards[opened_cards.length - 1][1];
-    index2 = opened_cards[opened_cards.length - 2][1];
-    cards[index1].removeEventListener("click", clicked);
-    cards[index2].removeEventListener("click", clicked);
-    scores();
-    moves();
-  } else if (opened_cards.length % 2 === 0 && (opened_cards[opened_cards.length - 1][0] != opened_cards[opened_cards.length - 2][0])) {
-    index1 = opened_cards[opened_cards.length - 1][1];
-    index2 = opened_cards[opened_cards.length - 2][1];
-    cards[index1].className = "card shake-constant shake-horizontal";
-    cards[index2].className = "card shake-constant shake-horizontal";
-
-    setTimeout(turnback, 200);
-  }
-};
-
-function turnback() {
-  cards[index1].className = "card";
-  cards[index2].className = "card";
-  cards[index1].addEventListener("click", clicked);
-  cards[index2].addEventListener("click", clicked);
-  moves();
+function stopTimer() {
+  clearInterval(timerInterval);
 }
 
+function pad(val) {
+  return val < 10 ? "0" + val : String(val);
+}
 
-let j = 1;
+// Moves + stars
+function updateMoves() {
+  movesCount++;
+  movesEl.innerHTML = movesCount;
+  updateStars();
+}
 
-function moves() { // counter of moves
-  move = document.getElementsByClassName("moves")[0].innerHTML = j++;
-  starss=document.getElementsByClassName('fa-star');
-  stars(move);
-};
+function updateStars() {
+  const stars = document.getElementsByClassName('fa-star');
 
-function scores() { // Sends a message after a player won.
-  score = score + 1;
-  if (score === 8) {
-    document.getElementsByClassName("container")[0].className = "container won";
-    setTimeout(function() {
-      const myPara = document.createElement('p');
-      minutes=document.getElementById("minutes").innerText;
-      seconds=document.getElementById("seconds").innerText;
-      total_time=Number(minutes)*60+Number(seconds);
-      times.push=total_time;
-      myPara.textContent = "You won" + " with " + move + " moves, "+ minutes + " minutes, "+ seconds + " seconds and " + num_stars + " stars";
-      document.body.appendChild(myPara);
-    }, 500);
-    var x = document.createElement("BUTTON");
-    document.body.appendChild(x);
-    x.appendChild(document.createTextNode('Play again!'));
-    x.addEventListener("click", again);
-  }
-};
-
-function stars(moves){ // Correction according to last review: stars cannot be zero
-  if(moves===9){
-    starss[2].className="fa fa-star-o";
-    num_stars=2;
-  }else if(moves===20){
-    starss[1].className="fa fa-star-o";
-    num_stars=1;
+  if (movesCount >= 9 && numStars === 3) {
+    stars[2].className = "fa fa-star-o";
+    numStars = 2;
+  } else if (movesCount >= 20 && numStars === 2) {
+    stars[1].className = "fa fa-star-o";
+    numStars = 1;
   }
 }
 
-z = document.getElementsByClassName('restart');
-z[0].addEventListener("click", again);
+// Click en carta
+function handleCardClick() {
+  if (
+    this.classList.contains('open') ||
+    this.classList.contains('match') ||
+    openedCards.length === 2
+  ) {
+    return;
+  }
 
-function again() { // Reload a game.
-  location.reload();
-  };
+  if (!timerStarted) {
+    startTimer();
+    timerStarted = true;
+  }
+
+  this.classList.add('open', 'show');
+  openedCards.push(this);
+
+  if (openedCards.length === 2) {
+    updateMoves();
+    checkForMatch();
+  }
+}
+
+// Revisar match
+function checkForMatch() {
+  const [card1, card2] = openedCards;
+
+  if (card1.dataset.card === card2.dataset.card) {
+    card1.className = "card show match";
+    card2.className = "card show match";
+    openedCards = [];
+    matchedPairs++;
+
+    if (matchedPairs === 8) {
+      gameWon();
+    }
+  } else {
+    setTimeout(() => {
+      card1.className = "card";
+      card2.className = "card";
+      openedCards = [];
+    }, 700);
+  }
+}
+
+// Ganar juego
+function gameWon() {
+  stopTimer();
+
+  setTimeout(() => {
+    alert(
+      `¡Ganaste! Terminaste en ${movesCount} movimientos, ` +
+      `${minutesLabel.innerText}:${secondsLabel.innerText} y ${numStars} estrellas.`
+    );
+  }, 300);
+}
+
+// Reiniciar
+function restartGame() {
+  stopTimer();
+  timerStarted = false;
+  totalSeconds = 0;
+  minutesLabel.innerHTML = "00";
+  secondsLabel.innerHTML = "00";
+
+  matchedPairs = 0;
+  movesCount = 0;
+  numStars = 3;
+  openedCards = [];
+
+  movesEl.innerHTML = 0;
+
+  const starIcons = document.querySelectorAll('.stars i');
+  starIcons.forEach(star => {
+    star.className = "fa fa-star";
+  });
+
+  cards.forEach(card => {
+    card.className = "card";
+  });
+
+  shuffleCards();
+}
+
+// Inicializar
+shuffleCards();
+cards.forEach(card => {
+  card.addEventListener("click", handleCardClick);
+});
+restartBtn.addEventListener("click", restartGame);
