@@ -56,7 +56,7 @@ for (i = 0; i < 16; i++) { // creates an event listener for every clicked card
 
 function clicked() {
   this.className = "card show open";
-  return opened(this.childNodes[1].className, this.place);
+  return opened(this.dataset.card, this.place);
 }
 
 function opened(name, index) { // analyzes if the cards match or not, and based on that changes styles.
