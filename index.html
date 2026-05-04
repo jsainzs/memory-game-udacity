@@ -1,103 +1,58 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8">
-    <title>Matching Game</title>
-    <meta name="description" content="">
+    <title>Memorama americanista</title>
+    <meta name="description" content="Memorama para aficionados del Club América">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
     <link rel="stylesheet" href="css/app.css">
     <link rel="stylesheet" type="text/css" href="https://csshake.surge.sh/csshake.min.css">
 </head>
 
-<script>
-fetch('https://api.countapi.xyz/hit/jsainzs/america_hoy')
-  .then(res => res.json())
-  .then(res => {
-    document.getElementById('visits').innerText = res.value;
-  });
-</script>
-    
 <body>
-
     <div class="container">
         <header>
-            <h1>Matching Game</h1>
+            <h1>Memorama americanista</h1>
         </header>
 
-        <section class="score-panel">
-        	<ul class="stars">
-        		<li class=estr><i class="fa fa-star"></i></li>
-        		<li class=estr><i class="fa fa-star"></i></li>
-        		<li class=estr><i class="fa fa-star"></i></li>
-        	</ul>
-
-        	<span class="moves">3</span> Moves
-
-          <label id="minutes">00</label>:<label id="seconds">00</label>
-
-            <div class="restart">
-        		<i class="fa fa-repeat"></i>
-        	</div>
+        <section class="deck-picker" aria-label="Escoge un memorama">
+            <button class="deck-option active" type="button" data-deck="jerseys">
+                Camisetas históricas
+                <span>8 pares</span>
+            </button>
+            <button class="deck-option" type="button" data-deck="titles">
+                Títulos de liga
+                <span>12 pares</span>
+            </button>
         </section>
 
-    <ul class="deck">
-        <li class="card" data-card="1916">
-            <img src="img/jersey_1916.png" class="card-img">
-        </li>
-        <li class="card" data-card="1916">
-            <img src="img/jersey_1916.png" class="card-img">
-        </li>
-        <li class="card" data-card="80s">
-            <img src="img/80s.png" class="card-img">
-        </li>
-        <li class="card" data-card="80s">
-            <img src="img/80s.png" class="card-img">
-        </li>
-        <li class="card" data-card="reynoso">
-            <img src="img/reynoso.png" class="card-img">
-        </li>
-        <li class="card" data-card="reynoso">
-            <img src="img/reynoso.png" class="card-img">
-        </li>
-        <li class="card" data-card="chanfle">
-            <img src="img/chanfle.png" class="card-img">
-        </li>
-        <li class="card" data-card="chanfle">
-            <img src="img/chanfle.png" class="card-img">
-        </li>
-        <li class="card" data-card="tri">
-            <img src="img/tri.png" class="card-img">
-        </li>
-         <li class="card" data-card="tri">
-            <img src="img/tri.png" class="card-img">
-        </li>
-        <li class="card" data-card="cuau">
-            <img src="img/cuau.png" class="card-img">
-        </li>
-        <li class="card" data-card="cuau">
-            <img src="img/cuau.png" class="card-img">
-        </li>
-        <li class="card" data-card="cent">
-            <img src="img/cent_2016.png" class="card-img">
-        </li>
-        <li class="card" data-card="cent">
-            <img src="img/cent_2016.png" class="card-img">
-        </li>
-        <li class="card" data-card="blanca">
-            <img src="img/blanca.png" class="card-img">
-        </li>
-        <li class="card" data-card="blanca">
-            <img src="img/blanca.png" class="card-img">
-        </li>
-    </ul>
+        <section class="score-panel">
+            <ul class="stars">
+                <li class="estr"><i class="fa fa-star"></i></li>
+                <li class="estr"><i class="fa fa-star"></i></li>
+                <li class="estr"><i class="fa fa-star"></i></li>
+            </ul>
+
+            <span class="moves">0</span> Movimientos
+
+            <label id="minutes">00</label>:<label id="seconds">00</label>
+
+            <button class="restart" type="button" aria-label="Reiniciar memorama">
+                <i class="fa fa-repeat"></i>
+            </button>
+        </section>
+
+        <ul class="deck" aria-live="polite"></ul>
     </div>
 
+    <p>
+        <a href="https://jsainzs.github.io/america_hoy/" class="back-link">
+            ← Volver a Hoy juega el América
+        </a>
+    </p>
+
     <script src="js/app.js"></script>
-<p>
-  <a href="https://jsainzs.github.io/america_hoy/" class="back-link">
-    ← Volver a Hoy juega el América
-  </a>
-</p>
 </body>
 </html>
